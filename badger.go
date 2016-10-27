@@ -1,9 +1,13 @@
 package main
 
 import (
+	"log"
 	"net/http"
+	"time"
 
+	"github.com/gorilla/mux"
 	"github.com/npetzall/badger-go/lib/badge"
+	"github.com/npetzall/badger-go/lib/nexus"
 )
 
 func createBadge(w http.ResponseWriter, r *http.Request) {
@@ -18,6 +22,15 @@ func createBadge(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	http.HandleFunc("/badge", createBadge)
-	http.ListenAndServe(":8080", nil)
+	r := mux.NewRouter()
+	r.Path("/badge").Handler(http.HandlerFunc(createBadge))
+	nexus.Configure(r.PathPrefix(nexus.PathPrefix).Subrouter())
+
+	srv := &http.Server{
+		Handler:      r,
+		Addr:         ":8080",
+		WriteTimeout: 15 * time.Second,
+		ReadTimeout:  15 * time.Second,
+	}
+	log.Fatal(srv.ListenAndServe())
 }

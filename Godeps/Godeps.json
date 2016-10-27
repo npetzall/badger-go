@@ -1,0 +1,17 @@
+{
+	"ImportPath": "github.com/npetzall/badger-go",
+	"GoVersion": "go1.7",
+	"GodepVersion": "v74",
+	"Deps": [
+		{
+			"ImportPath": "github.com/NodePrime/jsonpath",
+			"Comment": "v0.3.1-9-g84403de",
+			"Rev": "84403ded544328c99be3472727667179eef23a91"
+		},
+		{
+			"ImportPath": "github.com/gorilla/mux",
+			"Comment": "v1.1-27-g757bef9",
+			"Rev": "757bef944d0f21880861c2dd9c871ca543023cba"
+		}
+	]
+}

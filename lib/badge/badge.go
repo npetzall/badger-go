@@ -2,7 +2,9 @@ package badge
 
 import (
 	"bytes"
+	"fmt"
 	"html/template"
+	"net/http"
 	"unicode/utf8"
 )
 
@@ -30,6 +32,33 @@ const badgeTemplate = `
     <text x="{{ .LeftOffset }}" y="13">{{ .Left }}</text>
     <text x="{{ .RightOffset }}" y="14" fill="#010101" fill-opacity=".3">{{ .Right }}</text>
     <text x="{{ .RightOffset }}" y="13">{{ .Right }}</text>
+  </g>
+</svg>
+`
+const downStream = `
+<svg xmlns="http://www.w3.org/2000/svg" width="152.1" height="18">
+  <linearGradient id="smooth" x2="0" y2="100%">
+    <stop offset="0"  stop-color="#fff" stop-opacity=".7"/>
+    <stop offset=".1" stop-color="#aaa" stop-opacity=".1"/>
+    <stop offset=".9" stop-color="#000" stop-opacity=".3"/>
+    <stop offset="1"  stop-color="#000" stop-opacity=".5"/>
+  </linearGradient>
+
+  <mask id="round">
+    <rect width="152.1" height="18" rx="4" fill="#fff"/>
+  </mask>
+
+  <g mask="url(#round)">
+    <rect width="90" height="18" fill="#555"/>
+    <rect x="90" width="67.5" height="18" fill="red"/>
+    <rect width="152.1" height="18" fill="url(#smooth)"/>
+  </g>
+
+  <g fill="#fff" text-anchor="middle" font-family="DejaVu Sans,Verdana,Geneva,sans-serif" font-size="12">
+    <text x="46" y="14" fill="#010101" fill-opacity=".3">Downstream</text>
+    <text x="46" y="13">Downstream</text>
+    <text x="122.75" y="14" fill="#010101" fill-opacity=".3">Error</text>
+    <text x="122.75" y="13">Error</text>
   </g>
 </svg>
 `
@@ -64,4 +93,10 @@ func CreateBadge(l, r, c string) (error, []byte) {
 		return err, nil
 	}
 	return nil, buf.Bytes()
+}
+
+func DownstreamError(w http.ResponseWriter, err error) {
+	fmt.Println(err)
+	w.Header().Add("Content-Type", "image/svg+xml")
+	w.Write([]byte(downStream))
 }
