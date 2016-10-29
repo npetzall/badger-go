@@ -2,10 +2,11 @@ package badge
 
 import (
 	"bytes"
-	"fmt"
 	"html/template"
 	"net/http"
 	"unicode/utf8"
+
+	logging "github.com/op/go-logging"
 )
 
 const badgeTemplate = `
@@ -63,6 +64,8 @@ const downStream = `
 </svg>
 `
 
+var log = logging.MustGetLogger("badge")
+
 var tmplBadge = template.Must(template.New("").Parse(badgeTemplate))
 
 type badgeParams struct {
@@ -90,13 +93,13 @@ func CreateBadge(l, r, c string) (error, []byte) {
 	bp := createBadgeParams(l, r, c)
 	var buf bytes.Buffer
 	if err := tmplBadge.Execute(&buf, bp); err != nil {
+		log.Error(err)
 		return err, nil
 	}
 	return nil, buf.Bytes()
 }
 
 func DownstreamError(w http.ResponseWriter, err error) {
-	fmt.Println(err)
 	w.Header().Add("Content-Type", "image/svg+xml")
 	w.Write([]byte(downStream))
 }
