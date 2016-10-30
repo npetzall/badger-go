@@ -99,7 +99,7 @@ func CreateBadge(l, r, c string) (error, []byte) {
 	return nil, buf.Bytes()
 }
 
-func DownstreamError(w http.ResponseWriter, err error) {
+func DownstreamError(w http.ResponseWriter) {
 	w.Header().Add("Content-Type", "image/svg+xml")
 	w.Write([]byte(downStream))
 }

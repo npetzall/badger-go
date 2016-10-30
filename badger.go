@@ -8,7 +8,8 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/npetzall/badger-go/lib/badge"
 	"github.com/npetzall/badger-go/lib/logger"
-	"github.com/npetzall/badger-go/lib/nexus"
+	"github.com/npetzall/badger-go/system/nexus"
+	"github.com/npetzall/badger-go/system/sonarqube"
 	logging "github.com/op/go-logging"
 )
 
@@ -19,22 +20,20 @@ func createBadge(w http.ResponseWriter, r *http.Request) {
 	err, data := badge.CreateBadge(q.Get("l"), q.Get("r"), q.Get("c"))
 	if err != nil {
 		log.Error(err)
-		badge.DownstreamError(w, err)
+		badge.DownstreamError(w)
 	} else {
 		w.Header().Add("Content-Type", "image/svg+xml")
 		w.Write(data)
 	}
 }
 
-func init() {
-	logger.Init()
-}
-
 func main() {
 	flag.Parse()
+	logger.Init()
 	r := mux.NewRouter()
 	r.Path("/badge").Handler(http.HandlerFunc(createBadge))
 	nexus.Configure(r.PathPrefix(nexus.PathPrefix).Subrouter())
+	sonarqube.Configure(r.PathPrefix(sonarqube.PathPrefix).Subrouter())
 
 	srv := &http.Server{
 		Handler:      r,
