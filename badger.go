@@ -8,6 +8,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/npetzall/badger-go/lib/badge"
 	"github.com/npetzall/badger-go/lib/logger"
+	"github.com/npetzall/badger-go/system/artifactory"
 	"github.com/npetzall/badger-go/system/nexus"
 	"github.com/npetzall/badger-go/system/sonarqube"
 	logging "github.com/op/go-logging"
@@ -34,6 +35,7 @@ func main() {
 	r.Path("/badge").Handler(http.HandlerFunc(createBadge))
 	nexus.Configure(r.PathPrefix(nexus.PathPrefix).Subrouter())
 	sonarqube.Configure(r.PathPrefix(sonarqube.PathPrefix).Subrouter())
+	artifactory.Configure(r.PathPrefix(artifactory.PathPrefix).Subrouter())
 
 	srv := &http.Server{
 		Handler:      r,

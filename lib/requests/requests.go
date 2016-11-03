@@ -51,3 +51,14 @@ func JsonFirstMatch(path string) func(body io.ReadCloser) (string, error) {
 		}
 	}
 }
+
+func Text() func(body io.ReadCloser) (string, error) {
+	return func(body io.ReadCloser) (string, error) {
+		data, err := ioutil.ReadAll(body)
+		if err != nil {
+			log.Error(err)
+			return "", err
+		}
+		return string(data), nil
+	}
+}
