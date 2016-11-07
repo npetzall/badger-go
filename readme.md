@@ -7,25 +7,26 @@ Shield/badge template is from https://github.com/odino/nodejs-badges
 which is inspired from shields.io's shield.  
 
 ### Latest version in artifactory
-
 `/artifactory/latestVersion?g=[groupId]&a=[artifactId]&repos=[repoId]`
 
-g = groupId, a= artifactId, repos= repository
+g= groupId, a= artifactId, repos= repository
 
 ### Latest version in nexus
+`/nexus/latestVersion?g=[groupId]&a=[artifactId]&r=[repoId]`  
 
+g= groupId, a= artifactId, r= repoId
 
 ### Sonarqube overall coverage (is going to be version specific)
 `/sonarqube/overall-coverage?id=[componentId/projectId]`
 
-id = projectId/componentId not really sure
+id= projectId/componentId not really sure
 
 ## TODO
 
 ### Bamboo buildStatus
 `/bamboo/buildstatus?planKey=[planKey]`
 
-planKey =  [the plankey in bamboo]
+planKey=  [the plankey in bamboo]
 
 ### Jenkins buildStatus
 `/jenkins/buildstatus?`
