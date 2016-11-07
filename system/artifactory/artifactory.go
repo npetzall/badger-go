@@ -36,7 +36,6 @@ func Configure(r *mux.Router) {
 
 func getLatestVersion(w http.ResponseWriter, r *http.Request) {
 	defer metric.Timed(time.Now(), "getLatestVersion", log)
-	log.Infof("GET: %s", artifactoryURL+"/api/search/latestVersion?"+r.URL.RawQuery)
 	req, rerr := http.NewRequest("GET", artifactoryURL+"/api/search/latestVersion?"+r.URL.RawQuery, nil)
 	if rerr != nil {
 		log.Error(rerr)

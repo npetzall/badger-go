@@ -14,6 +14,7 @@ import (
 var log = logging.MustGetLogger("requests")
 
 func Request(r *http.Request, fn func(body io.ReadCloser) (string, error)) (string, error) {
+	log.Debugf("%s: %s", r.Method, r.URL.String())
 	client := &http.Client{}
 	res, err := client.Do(r)
 	if err != nil {

@@ -1,0 +1,10 @@
+version: '2'
+services:
+  pinger:
+    image: badger-go
+    ports:
+      - "3000:8080"
+    environment:
+      - ARTIFACTORY_URL=https://artifactory
+      - SONARQUBE_URL=https://sonarqube
+      - NEXUS_URL=https://nexus
